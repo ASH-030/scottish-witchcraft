@@ -1,0 +1,15 @@
+# Data — raw database (large file, add manually)
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
