@@ -1,0 +1,18 @@
+[
+  {
+    "stage": "Accused",
+    "count": 3219
+  },
+  {
+    "stage": "Tried",
+    "count": 299
+  },
+  {
+    "stage": "Convicted",
+    "count": 236
+  },
+  {
+    "stage": "Executed",
+    "count": 230
+  }
+]
