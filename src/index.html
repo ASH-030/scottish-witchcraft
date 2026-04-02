@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Scottish Witch Trials</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="lightning-flash" id="lightningFlash"></div>
+  <div class="rune-layer" id="runeLayer"></div>
+
+  <nav class="chapter-nav" id="chapterNav">
+    <button class="nav-dot active" data-chapter="0" title="Prologue"></button>
+    <button class="nav-dot" data-chapter="1" title="The Wave"></button>
+    <button class="nav-dot" data-chapter="2" title="Who They Were"></button>
+    <button class="nav-dot" data-chapter="3" title="The Machinery"></button>
+    <button class="nav-dot" data-chapter="4" title="The Charges"></button>
+  </nav>
+
+  <div class="scroll-hint" id="scrollHint">
+    <span>scroll or click to continue</span>
+    <div class="scroll-arrow">↓</div>
+  </div>
+
+  <main id="storyboard">
+
+    <section class="chapter active" id="chapter-0">
+      <div class="chapter-inner prologue-inner">
+        <div class="prologue-sigil">⛧</div>
+        <h1 class="prologue-title">The Scottish<br/>Witch Trials</h1>
+        <p class="prologue-dates">1563 — 1736</p>
+        <p class="prologue-body">
+          Between the Witchcraft Act of 1563 and its repeal in 1736,
+          Scotland prosecuted more people for witchcraft per capita
+          than any other country in Europe.
+          <br/><br/>
+          Nearly <strong>3,837</strong> names survive in the record.
+          These are their stories.
+        </p>
+        <p class="prologue-source">Source: Survey of Scottish Witchcraft, University of Edinburgh (2003)</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-1">
+      <div class="chapter-inner">
+        <div class="chapter-header">
+          <span class="chapter-label">Chapter I</span>
+          <h2 class="chapter-title">The Wave</h2>
+          <p class="chapter-subtitle">Accusations did not rise steadily — they came in violent surges, driven by panic, politics, and persecution.</p>
+        </div>
+        <div class="viz-container" id="viz-timeline"></div>
+        <div class="annotation-box" id="annotation-timeline"></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-2">
+      <div class="chapter-inner">
+        <div class="chapter-header">
+          <span class="chapter-label">Chapter II</span>
+          <h2 class="chapter-title">Who They Were</h2>
+          <p class="chapter-subtitle">They were not mysterious figures from the shadows. They were ordinary people — servants, midwives, neighbours.</p>
+        </div>
+        <div class="viz-container" id="viz-who"></div>
+        <div class="annotation-box" id="annotation-who"></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-3">
+      <div class="chapter-inner">
+        <div class="chapter-header">
+          <span class="chapter-label">Chapter III</span>
+          <h2 class="chapter-title">The Machinery</h2>
+          <p class="chapter-subtitle">Accusation set a merciless process in motion. Few who entered it emerged unscathed.</p>
+        </div>
+        <div class="viz-container" id="viz-funnel"></div>
+        <div class="annotation-box" id="annotation-funnel"></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-4">
+      <div class="chapter-inner">
+        <div class="chapter-header">
+          <span class="chapter-label">Chapter IV</span>
+          <h2 class="chapter-title">The Charges</h2>
+          <p class="chapter-subtitle">What exactly were they accused of? The answers range from the terrifying to the heartbreakingly mundane.</p>
+        </div>
+        <div class="viz-container" id="viz-charges"></div>
+        <div class="annotation-box" id="annotation-charges"></div>
+        <div class="epilogue-footer">In memory of the accused. May their names not be forgotten.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="chapters/01_timeline.js"></script>
+  <script src="chapters/02_who.js"></script>
+  <script src="chapters/03_funnel.js"></script>
+  <script src="chapters/04_charges.js"></script>
+  <script src="main.js"></script>
+
+  <script>
+    // Falling runes
+    const RUNES = ['⛧','✦','☽','♆','✝','☠','♛','✚','⚔'];
+    const layer = document.getElementById('runeLayer');
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement('span');
+      el.className = 'rune';
+      el.textContent = RUNES[Math.floor(Math.random() * RUNES.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
+      el.style.animationDuration = (12 + Math.random() * 16) + 's';
+      el.style.animationDelay = (Math.random() * 20) + 's';
+      layer.appendChild(el);
+    }
+
+    // Letter-by-letter title
+    function animateTitle(section) {
+      const title = section.querySelector('.chapter-title');
+      if (!title || title.dataset.animated) return;
+      title.dataset.animated = 'true';
+      const text = title.textContent;
+      title.innerHTML = '';
+      [...text].forEach((char, i) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.style.animationDelay = (i * 0.045) + 's';
+        title.appendChild(span);
+      });
+    }
+
+    function triggerLightning(color) {
+      const flash = document.getElementById('lightningFlash');
+      flash.style.background = color || 'rgba(57,255,20,0.12)';
+      flash.classList.remove('strike');
+      void flash.offsetWidth;
+      flash.classList.add('strike');
+    }
+
+    window.triggerLightning = triggerLightning;
+    window.animateTitle = animateTitle;
+  </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "sex": [
+    {
+      "sex": "Female",
+      "count": 2702
+    },
+    {
+      "sex": "Male",
+      "count": 468
+    }
+  ],
+  "occupations": [
+    {
+      "occupation": "Servant",
+      "count": 23
+    },
+    {
+      "occupation": "Vagabond",
+      "count": 23
+    },
+    {
+      "occupation": "Midwife",
+      "count": 9
+    },
+    {
+      "occupation": "Weaver",
+      "count": 8
+    },
+    {
+      "occupation": "Miller",
+      "count": 3
+    },
+    {
+      "occupation": "Tailor",
+      "count": 2
+    },
+    {
+      "occupation": "Messenger",
+      "count": 2
+    },
+    {
+      "occupation": "Smith",
+      "count": 2
+    }
+  ],
+  "counties": [
+    {
+      "county": "Haddington",
+      "count": 543
+    },
+    {
+      "county": "Fife",
+      "count": 382
+    },
+    {
+      "county": "Edinburgh",
+      "count": 374
+    },
+    {
+      "county": "Aberdeen",
+      "count": 175
+    },
+    {
+      "county": "Ayr",
+      "count": 153
+    },
+    {
+      "county": "Berwick",
+      "count": 126
+    },
+    {
+      "county": "Renfrew",
+      "count": 124
+    },
+    {
+      "county": "Linlithgow",
+      "count": 114
+    },
+    {
+      "county": "Perth",
+      "count": 109
+    },
+    {
+      "county": "Peebles",
+      "count": 91
+    }
+  ],
+  "total": 3219
+}

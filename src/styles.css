@@ -1,0 +1,270 @@
+/* ============================================================
+   Scottish Witch Trials — Per-Chapter Themes v4
+   ============================================================ */
+
+:root {
+  --bg:         #050d05;
+  --bg-surface: #080f08;
+  --bg-card:    #0d1a0d;
+  --text:       #e8ffe4;
+  --text-muted: #b8d8b0;
+  --text-faint: #6a9a62;
+
+  --c0-primary: #39ff14; --c0-dim: #1faa0a; --c0-glow: rgba(57,255,20,0.25);
+  --c1-primary: #00e5ff; --c1-dim: #0099bb; --c1-glow: rgba(0,229,255,0.25); --c1-bg: #020a10;
+  --c2-primary: #ffd700; --c2-dim: #cc9900; --c2-glow: rgba(255,215,0,0.25);  --c2-bg: #0f0a00;
+  --c3-primary: #cc44ff; --c3-dim: #7700bb; --c3-glow: rgba(204,68,255,0.25); --c3-bg: #0a0010;
+  --c4-primary: #ff3333; --c4-dim: #aa0000; --c4-glow: rgba(255,51,51,0.25);  --c4-bg: #100000;
+
+  --font-display: 'Cinzel Decorative', serif;
+  --font-heading: 'Cinzel', serif;
+  --font-body:    'EB Garamond', serif;
+  --transition:   0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout constants */
+  --header-h:     130px;
+  --annotation-h: 64px;
+  --hint-h:       40px;
+  --gap:          0.5rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  cursor: default;
+}
+
+/* ── Grid ── */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+  background-size: 40px 40px; pointer-events: none; z-index: 0;
+  animation: grid-drift 20s linear infinite;
+}
+@keyframes grid-drift { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+
+/* ── Runes ── */
+.rune-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.rune { position: absolute; top: -2rem; animation: rune-fall linear infinite; opacity: 0; }
+@keyframes rune-fall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.4; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* ── Lightning ── */
+.lightning-flash { position: fixed; inset: 0; pointer-events: none; z-index: 900; opacity: 0; }
+.lightning-flash.strike { animation: lightning 0.4s ease-out forwards; }
+@keyframes lightning { 0% { opacity:1; } 20% { opacity:0; } 40% { opacity:0.5; } 100% { opacity:0; } }
+
+/* ── Storyboard ── */
+#storyboard { width: 100vw; height: 100vh; position: relative; z-index: 1; }
+
+/* ── Chapter shell ── */
+.chapter {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transform: translateY(30px);
+  transition: opacity var(--transition), transform var(--transition), background 0.6s ease;
+}
+.chapter.active  { opacity: 1; pointer-events: all; transform: translateY(0); }
+.chapter.exit-up { opacity: 0; transform: translateY(-30px); }
+
+#chapter-1.active { background: var(--c1-bg); }
+#chapter-2.active { background: var(--c2-bg); }
+#chapter-3.active { background: var(--c3-bg); }
+#chapter-4.active { background: var(--c4-bg); }
+
+/* ── Chapter inner — strict height budget ── */
+.chapter-inner {
+  width: min(1100px, 92vw);
+  /* leave 40px for scroll hint at bottom */
+  height: calc(100vh - var(--hint-h) - 16px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding-top: 1.8rem; /* room for top rune */
+}
+
+/* ── Prologue ── */
+.prologue-inner { align-items: center; text-align: center; gap: 1rem; justify-content: center; }
+
+.prologue-sigil {
+  font-size: clamp(2.5rem, 6vw, 4.5rem); color: var(--c0-primary); line-height: 1;
+  animation: candle-flicker 3s ease-in-out infinite;
+  text-shadow: 0 0 10px var(--c0-primary), 0 0 30px var(--c0-primary), 0 0 60px var(--c0-dim);
+}
+@keyframes candle-flicker {
+  0%,100% { opacity:1;    transform:scale(1)    rotate(0deg);    text-shadow:0 0 10px var(--c0-primary),0 0 30px var(--c0-primary); }
+  15%      { opacity:0.85; transform:scale(0.98) rotate(-1deg);   text-shadow:0 0 6px var(--c0-primary),0 0 16px var(--c0-dim); }
+  30%      { opacity:1;    transform:scale(1.04) rotate(1deg);    text-shadow:0 0 20px var(--c0-primary),0 0 50px var(--c0-primary); }
+  80%      { opacity:0.88; transform:scale(0.97) rotate(-1.5deg); text-shadow:0 0 5px var(--c0-primary),0 0 12px var(--c0-dim); }
+}
+.prologue-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700;
+  color: var(--c0-primary); line-height: 1.15;
+  text-shadow: 0 0 8px var(--c0-primary), 0 0 24px var(--c0-dim);
+  animation: title-glow-green 4s ease-in-out infinite alternate;
+}
+@keyframes title-glow-green {
+  0%   { text-shadow: 0 0 8px var(--c0-primary), 0 0 24px var(--c0-dim); }
+  100% { text-shadow: 0 0 16px var(--c0-primary), 0 0 48px var(--c0-primary), 0 0 80px var(--c0-dim); }
+}
+.prologue-dates {
+  font-family: var(--font-heading); font-size: clamp(0.85rem, 1.5vw, 1rem);
+  letter-spacing: 0.3em; color: #ffd700; text-transform: uppercase;
+  text-shadow: 0 0 8px #aa8800; animation: fade-in-up 1s ease-out 0.4s both;
+}
+.prologue-body {
+  max-width: 560px; font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--text-muted);
+  font-style: italic; line-height: 1.8;
+  border: 1px solid rgba(57,255,20,0.2); padding: 1rem 1.4rem;
+  background: var(--bg-card); border-radius: 2px;
+  animation: fade-in-up 1s ease-out 0.7s both;
+}
+.prologue-body strong { font-style: normal; color: #ff3333; font-weight: 600; }
+.prologue-source { font-size: clamp(0.7rem, 1.2vw, 0.82rem); color: var(--text-faint); letter-spacing: 0.08em; animation: fade-in-up 1s ease-out 1s both; }
+
+/* ── Chapter header — fixed height ── */
+.chapter-header {
+  flex-shrink: 0;
+  height: var(--header-h);
+  display: flex; flex-direction: column; justify-content: center; gap: 0.25rem;
+  border-left: 3px solid; padding-left: 1.2rem;
+}
+#chapter-1 .chapter-header { border-color: var(--c1-primary); box-shadow: -4px 0 14px var(--c1-glow); }
+#chapter-2 .chapter-header { border-color: var(--c2-primary); box-shadow: -4px 0 14px var(--c2-glow); }
+#chapter-3 .chapter-header { border-color: var(--c3-primary); box-shadow: -4px 0 14px var(--c3-glow); }
+#chapter-4 .chapter-header { border-color: var(--c4-primary); box-shadow: -4px 0 14px var(--c4-glow); }
+
+.chapter-label {
+  font-family: var(--font-heading);
+  font-size: clamp(0.65rem, 1vw, 0.8rem);
+  letter-spacing: 0.3em; text-transform: uppercase;
+}
+#chapter-1 .chapter-label { color: var(--c1-dim); }
+#chapter-2 .chapter-label { color: var(--c2-dim); }
+#chapter-3 .chapter-label { color: var(--c3-dim); }
+#chapter-4 .chapter-label { color: var(--c4-dim); }
+
+.chapter-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; line-height: 1.1;
+}
+#chapter-1 .chapter-title { color: var(--c1-primary); text-shadow: 0 0 8px var(--c1-primary), 0 0 24px var(--c1-dim); }
+#chapter-2 .chapter-title { color: var(--c2-primary); text-shadow: 0 0 8px var(--c2-primary), 0 0 24px var(--c2-dim); }
+#chapter-3 .chapter-title { color: var(--c3-primary); text-shadow: 0 0 8px var(--c3-primary), 0 0 24px var(--c3-dim); }
+#chapter-4 .chapter-title { color: var(--c4-primary); text-shadow: 0 0 8px var(--c4-primary), 0 0 24px var(--c4-dim); }
+
+.chapter-title .letter { display: inline-block; opacity: 0; transform: translateY(12px); animation: letter-in 0.4s ease-out forwards; }
+@keyframes letter-in { to { opacity: 1; transform: translateY(0); } }
+
+.chapter-subtitle {
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  color: var(--text-muted); font-style: italic; max-width: 700px; line-height: 1.4;
+  opacity: 0; animation: fade-in-up 0.6s ease-out 0.6s both;
+}
+
+@keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Viz — takes all remaining space ── */
+.viz-container {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Annotation — fixed height, never overlaps hint ── */
+.annotation-box {
+  flex-shrink: 0;
+  height: var(--annotation-h);
+  display: flex; align-items: center;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  color: var(--text-muted); font-style: italic;
+  padding: 0 1rem;
+  border-top: 1px solid;
+  line-height: 1.4;
+  opacity: 0; animation: fade-in-up 0.6s ease-out 0.9s both;
+  overflow: hidden;
+}
+#chapter-1 .annotation-box { border-color: rgba(0,229,255,0.2);  background: rgba(2,10,16,0.9); }
+#chapter-2 .annotation-box { border-color: rgba(255,215,0,0.2);  background: rgba(15,10,0,0.9); }
+#chapter-3 .annotation-box { border-color: rgba(204,68,255,0.2); background: rgba(10,0,16,0.9); }
+#chapter-4 .annotation-box { border-color: rgba(255,51,51,0.2);  background: rgba(16,0,0,0.9); }
+
+.annotation-box strong { font-style: normal; color: var(--text); }
+.annotation-box .highlight-blood { color: #ff4444; font-style: normal; font-weight: 600; }
+.annotation-box .highlight-amber { color: #ffd700; font-style: normal; font-weight: 600; }
+
+/* ── Scroll hint — always at very bottom, never overlaps ── */
+.scroll-hint {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--hint-h);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  z-index: 500;
+  font-family: var(--font-heading);
+  font-size: clamp(0.55rem, 1vw, 0.68rem);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-faint);
+  background: rgba(5,13,5,0.95);
+  border-top: 1px solid rgba(57,255,20,0.08);
+  transition: opacity 0.5s ease;
+}
+.scroll-hint.hidden { opacity: 0; pointer-events: none; }
+.scroll-arrow { color: var(--c0-primary); animation: bounce 2s ease-in-out infinite; font-size: 1rem; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+/* ── Nav dots ── */
+.chapter-nav { position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.75rem; z-index: 500; }
+.nav-dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid #333; background: transparent; cursor: pointer; transition: all 0.3s ease; padding: 0; }
+.nav-dot[data-chapter="0"]:hover,.nav-dot[data-chapter="0"].active { background:var(--c0-primary);border-color:var(--c0-primary);box-shadow:0 0 8px var(--c0-primary);transform:scale(1.3); }
+.nav-dot[data-chapter="1"]:hover,.nav-dot[data-chapter="1"].active { background:var(--c1-primary);border-color:var(--c1-primary);box-shadow:0 0 8px var(--c1-primary);transform:scale(1.3); }
+.nav-dot[data-chapter="2"]:hover,.nav-dot[data-chapter="2"].active { background:var(--c2-primary);border-color:var(--c2-primary);box-shadow:0 0 8px var(--c2-primary);transform:scale(1.3); }
+.nav-dot[data-chapter="3"]:hover,.nav-dot[data-chapter="3"].active { background:var(--c3-primary);border-color:var(--c3-primary);box-shadow:0 0 8px var(--c3-primary);transform:scale(1.3); }
+.nav-dot[data-chapter="4"]:hover,.nav-dot[data-chapter="4"].active { background:var(--c4-primary);border-color:var(--c4-primary);box-shadow:0 0 8px var(--c4-primary);transform:scale(1.3); }
+
+/* ── Tooltip ── */
+.d3-tooltip { position: absolute; background: var(--bg-card); font-family: var(--font-body); font-size: 0.95rem; padding: 0.4rem 0.9rem; border: 1px solid; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; z-index: 200; white-space: nowrap; }
+.d3-tooltip.visible { opacity: 1; }
+#chapter-1 .d3-tooltip { color: var(--c1-primary); border-color: var(--c1-dim); box-shadow: 0 0 10px var(--c1-glow); }
+#chapter-2 .d3-tooltip { color: var(--c2-primary); border-color: var(--c2-dim); box-shadow: 0 0 10px var(--c2-glow); }
+#chapter-3 .d3-tooltip { color: var(--c3-primary); border-color: var(--c3-dim); box-shadow: 0 0 10px var(--c3-glow); }
+#chapter-4 .d3-tooltip { color: var(--c4-primary); border-color: var(--c4-dim); box-shadow: 0 0 10px var(--c4-glow); }
+
+/* ── Epilogue ── */
+.epilogue-footer { flex-shrink: 0; text-align: center; font-style: italic; font-size: clamp(0.8rem,1.2vw,0.95rem); color: #ff6666; padding: 0.3rem; border-top: 1px solid rgba(255,51,51,0.2); animation: fade-in-up 1s ease-out 1.2s both; }
+
+/* ── Top rune decoration ── */
+.chapter::after { content: '⛧  ✦  ⛧'; position: absolute; top: 0.5rem; left: 50%; transform: translateX(-50%); font-size: 0.6rem; letter-spacing: 0.6em; pointer-events: none; animation: flicker-dim 5s ease-in-out infinite; }
+#chapter-1::after { color: var(--c1-dim); }
+#chapter-2::after { color: var(--c2-dim); }
+#chapter-3::after { color: var(--c3-dim); }
+#chapter-4::after { color: var(--c4-dim); }
+@keyframes flicker-dim { 0%,100% { opacity:0.4; } 30% { opacity:0.7; } 50% { opacity:0.2; } 70% { opacity:0.6; } }
+
+::-webkit-scrollbar { display: none; }
+/* ── Scroll hint per-chapter color ── */
+.scroll-hint.ch-0 { color: #1faa0a; border-top-color: rgba(57,255,20,0.1); }
+.scroll-hint.ch-0 .scroll-arrow { color: #39ff14 !important; }
+.scroll-hint.ch-1 { color: #0099bb; border-top-color: rgba(0,229,255,0.1); }
+.scroll-hint.ch-1 .scroll-arrow { color: #00e5ff !important; }
+.scroll-hint.ch-2 { color: #cc9900; border-top-color: rgba(255,215,0,0.1); }
+.scroll-hint.ch-2 .scroll-arrow { color: #ffd700 !important; }
+.scroll-hint.ch-3 { color: #7700bb; border-top-color: rgba(204,68,255,0.1); }
+.scroll-hint.ch-3 .scroll-arrow { color: #cc44ff !important; }
+.scroll-hint.ch-4 { color: #aa0000; border-top-color: rgba(255,51,51,0.1); }
+.scroll-hint.ch-4 .scroll-arrow { color: #ff3333 !important; }
